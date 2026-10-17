@@ -1,0 +1,55 @@
+INDUSTRIAL ELECTRICAL TRAINING HUB - คู่มือติดตั้ง (ฟรี)
+====================================================
+
+ภาพรวม
+- เว็บหน้าเดียวแบบ Glass UI + ภาพปกหลักสูตร + กล่องอ่าน PDF
+- หน้าเว็บโฮสต์ที่ GitHub Pages ฟรี ไม่ต้องมีโดเมน
+- ใช้ Google Apps Script ทำรายการ PDF จากโฟลเดอร์ Drive แบบอัตโนมัติ
+- ไม่มีการคัดลอกเนื้อหา PDF ไปไว้ใน GitHub: อ่านผ่าน Google Drive Preview
+- ห้ามใช้กับเอกสารลับ! รายชื่อไฟล์และเนื้อหา PDF ต้องตั้งใจให้สาธารณะ
+
+A. นำเว็บขึ้น GitHub Pages
+1) เข้า repository GitHub ที่สร้างไว้แล้ว (เช่น wongong11-ui/otics-document-hub)
+2) ในหน้า Code > Add file > Upload files
+3) อัปโหลด index.html, config.js และโฟลเดอร์ assets (ต้องมี assets/course-cover.png)
+   หมายเหตุ: ถ้าใช้ GitHub หน้าเว็บ ให้อัปโหลดไฟล์ที่อยู่ในโฟลเดอร์ zip ไม่ใช่ zip โดยตรง
+4) กด Commit changes
+5) รอให้ GitHub Pages deploy ผ่านใน Actions แล้วเปิดเว็บ
+   https://wongong11-ui.github.io/otics-document-hub/
+6) ถ้าต้องการ URL ไม่ติด OTICS ค่อย Rename repository เป็น industrial-electrical-training
+   และตั้งค่า Pages ใหม่ตามความเหมาะสม; QR Code ต้องทำใหม่ถ้า URL เปลี่ยน
+
+B. เชื่อมรายการ PDF จาก Google Drive อัตโนมัติ
+1) เปิด https://script.google.com/ และสร้าง New project
+2) ลบโค้ดเดิมใน Code.gs แล้วคัดลอกทั้งไฟล์ GoogleAppsScript.gs ลงไป
+3) ตรวจ FOLDER_ID ตรงกับโฟลเดอร์ของคุณ (ค่าเริ่มต้นตั้งให้แล้ว)
+4) กด Save ตั้งชื่อโปรเจกต์ แล้ว Deploy > New deployment > Web app
+5) ตั้ง Execute as: Me / Who has access: Anyone
+6) กด Deploy และอนุญาตการเข้าถึง Drive ตามหน้าจอ Google
+   สำคัญ: สคริปต์ใช้สิทธิ์บัญชีคุณอ่านรายชื่อไฟล์ และเผยแพร่ชื่อไฟล์/ID แบบสาธารณะ
+7) คัดลอก Web app URL ลงท้าย /exec
+8) เปิดไฟล์ config.js (บน GitHub กดไฟล์ > ไอคอนดินสอ) แล้ววาง URL ใน appsScriptUrl
+   ตัวอย่าง: appsScriptUrl: 'https://script.google.com/macros/s/AKfycbxxxxxxxx/exec',
+9) Commit changes และรอเว็บ deploy ใหม่แล้วกดปุ่ม รีเฟรช ในเว็บ
+10) เมื่ออัปโหลด PDF ใหม่ไว้ในโฟลเดอร์ระดับบนสุด เว็บจะดึงรายการใหม่เมื่อเปิดหน้า/กดรีเฟรช
+    *ไม่ดึงไฟล์จากโฟลเดอร์ย่อย และไม่ใช่การอัปเดตแบบ push เรียลไทม์*
+
+C. สิทธิ์การอ่าน PDF
+1) สำหรับ PDF ทุกไฟล์ที่ต้องการให้เปิดอ่านได้ ให้กด Share > General access > Anyone with the link > Viewer
+2) หากไม่ตั้งแชร์เป็นสาธารณะ รายการจะปรากฏแต่ผู้อ่านอาจพบหน้าขอสิทธิ์
+3) บางบัญชี Google Workspace อาจถูกผู้ดูแลปิดการแชร์ภายนอกหรือ Web app สำหรับ Anyone
+4) ไฟล์อาจไม่เปิดพรีวิวบนเบราว์เซอร์บางตัว หากเป็นเช่นนั้นใช้ปุ่ม เปิดต้นฉบับ
+5) Google Drive เป็นเจ้าของตัวแสดงเอกสาร (preview) ดังนั้นจะยังเห็นหน้าตา viewer ของ Google ภายในเว็บ
+
+D. QR Code
+- ทำ QR Code ไปยังลิงก์หน้าเว็บไซต์ GitHub Pages ไม่ใช่ลิงก์โฟลเดอร์ Drive
+- หากยังใช้ชื่อ repository เดิม URL คือ:
+  https://wongong11-ui.github.io/otics-document-hub/
+- เมื่อเพิ่มไฟล์ใหม่ใน Drive ไม่ต้องสร้าง QR Code ใหม่
+
+หมายเหตุด้านความปลอดภัย
+- GitHub Pages repository สาธารณะ: HTML, config และรูปภาพมองเห็นได้ทุกคน
+- Web app และชื่อไฟล์ PDF ถูกเปิดเผยต่อสาธารณะโดยออกแบบไว้
+- ห้ามใส่ API key, รหัสผ่าน หรือข้อมูลส่วนตัวลงใน config.js หรือโฟลเดอร์เอกสาร
+- หากชื่อไฟล์มีข้อมูลส่วนตัว/สำคัญ หลีกเลี่ยงโหมดเผยแพร่สาธารณะ
+- ตัวเว็บยังไม่เชื่อมข้อมูลจริงจนกว่าจะตั้งค่า Apps Script และแชร์ไฟล์
